@@ -30,7 +30,7 @@ def list_stack():
 def describe_stack(stackname):
    "List the status and drift status of a particular stack"
 
-   dash = '-' * 80
+   dash = '-' * 120
    paginator = stack_session.get_paginator('describe_stacks')
    response_iterator = paginator.paginate(StackName=stackname)
    print(dash)
