@@ -7,7 +7,7 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  describe-stack          List the status and drift status of a particular...
+  describe-stack          List the status and drift status of a particular stack
   detect-stack-drift      Trigger drift detect for a particular stack
   detect-stack-drift-all  Trigger drift detect of all stacks
   list-stacks             List the status and drift status of all stacks
