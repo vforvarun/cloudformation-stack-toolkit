@@ -71,6 +71,36 @@ def detect_drift_all():
 		except:
 			print("Failed")
 
+@cli.command('list-stack-resources')
+@click.argument('stackname')
+def list_stack_resources(stackname):
+   "List the resources of a particular stack"
+
+   dash = '-' * 120
+   paginator = stack_session.get_paginator('list_stack_resources')
+   response_iterator = paginator.paginate(StackName=stackname)
+   print(dash)
+   print('{:<40s}{:>20s}{:>20s}{:>20s}'.format("Logical Resource ID","Resource Type","Resource Status","Drift Status","Last Checked"))
+   print(dash)
+   for page in response_iterator:
+	   resources = page['StackResourceSummaries']
+	   for resource in resources:
+		 if(resource['DriftInformation']['StackResourceDriftStatus'] == "NOT_CHECKED"):
+			print('{:<40s}{:>20s}{:>20s}'.format(resource['LogicalResourceId'],resource['ResourceType'],resource['ResourceStatus'],resource['DriftInformation']['StackResourceDriftStatus']))
+		 else:
+			print('{:<40s}{:>20s}{:>20s}{:>20s}'.format(resource['LogicalResourceId'],resource['ResourceType'],resource['ResourceStatus'],resource['DriftInformation']['StackResourceDriftStatus']))
+
+@cli.command('describe-stack-resource-drift')
+@click.argument('stackname')
+def describe_stack_resource_drift(stackname):
+    "List the stack resource drift of a partcular stack"
+
+    dash = '-' * 120
+    response = stack_session.describe_stack_resource_drifts(StackName=stackname,StackResourceDriftStatusFilters=['MODIFIED','DELETED'])
+    print(dash)
+    print(response)
+    print(dash)
+
 
 if __name__ == '__main__':
     cli()
